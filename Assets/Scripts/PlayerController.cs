@@ -30,10 +30,20 @@ public class PlayerController : MonoBehaviour
     {
         originalScale = playerModel.localScale;
         crosshair.enabled = true;
+
+        // Hide and lock cursor
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape)) // Press ESC to unlock cursor
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+
         isGrounded = controller.isGrounded;
         if (isGrounded)
         {
@@ -70,6 +80,12 @@ public class PlayerController : MonoBehaviour
             controller.Move(moveDirection.normalized * speed * Time.deltaTime);
         }
 
+        else if (isGrounded)
+        {
+            velocity.x = 0f; // Stop residual movement
+            velocity.z = 0f;
+        }
+
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
@@ -82,6 +98,7 @@ public class PlayerController : MonoBehaviour
         {
             isSquashing = true;
         }
+
         else
         {
             isSquashing = false;
