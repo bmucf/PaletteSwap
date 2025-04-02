@@ -1,104 +1,147 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
-    public float patrolSpeed = 2f;
-    public float chaseSpeed = 4f;
-    public float detectionRange = 10f;
-    public float visionAngle = 45f;
-    public float loseSightTime = 2f;
-    public Transform[] patrolPoints;
-    public Transform player;
-    public LayerMask playerLayer;  // New LayerMask to only detect the player
-    private int currentPatrolIndex;
-    private bool chasingPlayer = false;
-    private float timeSinceLastSeen = 0f;
+    public Transform[] waypoints;
+    public float moveSpeed = 3f;
+    public float rotationSpeed = 5f;
+    public float detectionRange = 5f;
+
+    private int currentWaypointIndex = 0;
+    private Transform targetWaypoint;
+    private bool isRotating = false;
+    private Transform player;
+    private bool isChasing = false;
+    private Rigidbody rb;
 
     void Start()
     {
-        currentPatrolIndex = Random.Range(0, patrolPoints.Length);
-        StartCoroutine(Patrol());
-    }
+        rb = GetComponent<Rigidbody>(); // Get the Rigidbody component
 
-    void Update()
-    {
-        DetectPlayer();
-    }
-
-    void DetectPlayer()
-    {
-        Vector3 directionToPlayer = (player.position - transform.position).normalized;
-        float angleToPlayer = Vector3.Angle(transform.forward, directionToPlayer);
-        bool playerInSight = false;
-
-        // Debug Vision Cone (Field of View)
-        Debug.DrawRay(transform.position, transform.forward * detectionRange, Color.green); // Green: Forward Direction
-        Debug.DrawRay(transform.position, directionToPlayer * detectionRange, Color.red); // Red: Direction to Player
-
-        if (Vector3.Distance(transform.position, player.position) <= detectionRange && angleToPlayer <= visionAngle)
+        if (waypoints.Length > 0)
         {
-            RaycastHit hit;
-            Vector3 rayOrigin = transform.position + Vector3.up * 1.5f; // Raise raycast origin to enemy's "eyes"
-
-            // Use LayerMask to ensure we only hit the player
-            if (Physics.Raycast(rayOrigin, directionToPlayer, out hit, detectionRange, playerLayer))
-            {
-                Debug.Log("Raycast hit: " + hit.collider.name); // Debug raycast hit
-                if (hit.collider.CompareTag("Player"))
-                {
-                    playerInSight = true;
-                    timeSinceLastSeen = 0f;
-                    if (!chasingPlayer)
-                    {
-                        chasingPlayer = true;
-                        StopCoroutine(Patrol());
-                        StartCoroutine(ChasePlayer());
-                    }
-                }
-            }
-            else
-            {
-                Debug.Log("Raycast did not hit anything.");
-            }
+            targetWaypoint = waypoints[currentWaypointIndex];
         }
-
-        if (!playerInSight && chasingPlayer)
+        else
         {
-            timeSinceLastSeen += Time.deltaTime;
-            if (timeSinceLastSeen >= loseSightTime)
-            {
-                chasingPlayer = false;
-                StopCoroutine(ChasePlayer());
-                StartCoroutine(Patrol());
-            }
+            Debug.LogWarning("No waypoints assigned to SkeletonGuard.");
         }
     }
 
-    IEnumerator Patrol()
+    void FixedUpdate()
     {
-        while (!chasingPlayer)
+        // If chasing player, move toward the player
+        if (isChasing && player != null)
         {
-            Transform targetPoint = patrolPoints[currentPatrolIndex];
-            while (Vector3.Distance(transform.position, targetPoint.position) > 0.2f)
-            {
-                transform.position = Vector3.MoveTowards(transform.position, targetPoint.position, patrolSpeed * Time.deltaTime);
-                transform.LookAt(targetPoint);
-                yield return null;
-            }
-
-            currentPatrolIndex = Random.Range(0, patrolPoints.Length);
-            yield return new WaitForSeconds(Random.Range(1f, 3f));
+            ChasePlayer();
+        }
+        // If not chasing, move between waypoints
+        else if (!isRotating)
+        {
+            MoveToWaypoint();
         }
     }
 
-    IEnumerator ChasePlayer()
+    void MoveToWaypoint()
     {
-        while (chasingPlayer)
+        // If the skeleton is close to the current waypoint, move to the next
+        if (Vector3.Distance(transform.position, targetWaypoint.position) < 0.5f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, player.position, chaseSpeed * Time.deltaTime);
-            transform.LookAt(player);
+            StartCoroutine(RotateToNextWaypoint());
+        }
+        else
+        {
+            Vector3 direction = (targetWaypoint.position - transform.position).normalized;
+            direction.y = 0; // Keep the movement on the ground
+
+            Move(direction);
+            RotateTowards(direction);
+        }
+    }
+
+    void RotateTowards(Vector3 direction)
+    {
+        if (direction != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            rb.MoveRotation(Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * rotationSpeed));
+        }
+    }
+
+    IEnumerator RotateToNextWaypoint()
+    {
+        isRotating = true;
+        currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
+        Vector3 direction = (waypoints[currentWaypointIndex].position - transform.position).normalized;
+        direction.y = 0;
+
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+        while (Quaternion.Angle(transform.rotation, targetRotation) > 1f)
+        {
+            rb.MoveRotation(Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * rotationSpeed));
             yield return null;
         }
+
+        rb.MoveRotation(targetRotation);
+        targetWaypoint = waypoints[currentWaypointIndex];
+        isRotating = false;
+    }
+
+    // Trigger area for chasing the player (no damage yet)
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            player = other.transform;
+            isChasing = true;
+        }
+    }
+
+    // Stop chasing when player leaves trigger area
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            isChasing = false;
+            player = null;
+            // If the player leaves, return to waypoint movement
+            targetWaypoint = waypoints[currentWaypointIndex];
+        }
+    }
+
+    // Detect when the skeleton physically collides with the player to deal damage
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Health playerHealth = collision.gameObject.GetComponent<Health>();
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(100); // Call TakeDamage() to apply damage and potentially kill
+            }
+        }
+    }
+
+    void ChasePlayer()
+    {
+        if (player != null)
+        {
+            Vector3 targetPosition = player.position;
+            targetPosition.y = transform.position.y; // Keep skeleton on the ground
+
+            Vector3 direction = (targetPosition - transform.position).normalized;
+            Move(direction);
+            RotateTowards(direction);
+        }
+    }
+
+    void Move(Vector3 direction)
+    {
+        // Use MovePosition for smooth physics movement
+        Vector3 targetPosition = transform.position + direction * moveSpeed * Time.fixedDeltaTime;
+        rb.MovePosition(targetPosition); // Moves skeleton smoothly
     }
 }
