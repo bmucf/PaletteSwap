@@ -1,105 +1,100 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 public class PlayerGrapple : MonoBehaviour
 {
-    public float grappleRange = 20f; // Range to grapple target
-    public float grappleForce = 10f; // Force applied to player when grappling
-    public float shootSpeed = 30f; // Speed at which the cube will shoot
-    public Transform grappleArm; // Reference to the grapple arm (the small cube)
-    public KeyCode grappleKey = KeyCode.E; // Key to activate the grapple
+    public float shootSpeed = 30f; // Speed of the grapple arm
+    public float returnSpeed = 20f; // Speed of returning the grapple arm
+    public float grappleMoveSpeed = 15f; // Speed at which player moves to the target
+    public float maxGrappleDistance = 20f; // Max range of grapple
+    public Transform player; // The player
+    public Transform grappleArm; // The grapple arm (small cube)
+    public LayerMask grappleLayer; // Layer for valid grapple targets
 
-    private Transform currentGrappleTarget; // The current target to grapple to
-    private bool isGrappling = false; // Is the player currently grappling?
-    private bool isShooting = false; // Is the grapple arm shooting?
-    private Vector3 grappleTargetPosition; // The target position where the grapple arm should shoot
+    private Vector3 shootDirection; // Direction the grapple arm moves
+    private bool isShooting = false;
+    private bool isReturning = false;
+    private bool isPullingPlayer = false;
+    private Vector3 grappleTargetPosition;
 
     void Update()
     {
-        // Check if the player presses the left mouse button (Button 0)
-        if (Input.GetMouseButtonDown(0) && !isShooting && !isGrappling)
+        if (Input.GetMouseButtonDown(0) && !isShooting && !isReturning && !isPullingPlayer)
         {
-            Debug.Log("Left mouse button clicked!");
-            ShootGrappleArm(); // Call the method to shoot the grapple arm
+            ShootGrappleArm();
         }
 
-        // If the grapple arm is shooting, move it towards the target
         if (isShooting)
         {
-            ShootArmTowardsTarget();
+            MoveGrappleArm();
         }
 
-        // If grappling, move the player towards the target
-        if (isGrappling)
+        if (isReturning)
         {
-            GrappleToTarget();
+            ReturnGrappleArm();
+        }
+
+        if (isPullingPlayer)
+        {
+            PullPlayerToTarget();
         }
     }
 
-    private void ShootGrappleArm()
+    void ShootGrappleArm()
     {
         grappleArm.gameObject.SetActive(true);
-        // Check for a valid target within range
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, grappleRange);
-        foreach (var hitCollider in hitColliders)
-        {
-            if (hitCollider.CompareTag("GrappleTarget"))
-            {
-                currentGrappleTarget = hitCollider.transform;
-                grappleTargetPosition = currentGrappleTarget.position;
-                isShooting = true;
-                grappleArm.gameObject.SetActive(true); // Show the grapple arm
-                break;
-            }
-        }
+        isShooting = true;
+        isReturning = false;
+        isPullingPlayer = false;
+
+        // Set the direction based on where the player is looking
+        shootDirection = Camera.main.transform.forward;
     }
 
-    private void ShootArmTowardsTarget()
+    void MoveGrappleArm()
     {
-        if (grappleArm == null || currentGrappleTarget == null) return;
+        grappleArm.position += shootDirection * shootSpeed * Time.deltaTime;
 
-        // Calculate direction towards the target
-        Vector3 direction = (grappleTargetPosition - grappleArm.position).normalized;
-
-        // Debug log to check if the direction is being calculated correctly
-        Debug.Log($"Moving towards target: {grappleTargetPosition}, Direction: {direction}");
-
-        // Move the grapple arm (cube) towards the target position
-        grappleArm.position = Vector3.MoveTowards(grappleArm.position, grappleTargetPosition, shootSpeed * Time.deltaTime);
-
-        // Debug log to check if the position is updating
-        Debug.Log($"Grapple Arm Position: {grappleArm.position}");
-
-        // Once the grapple arm reaches the target, start the grappling process
-        if (Vector3.Distance(grappleArm.position, grappleTargetPosition) < 0.5f)
+        // If the arm goes too far without hitting anything, return
+        if (Vector3.Distance(grappleArm.position, player.position) > maxGrappleDistance)
         {
-            Debug.Log("Grapple arm has reached the target!");
             isShooting = false;
-            isGrappling = true;
-            grappleArm.gameObject.SetActive(false); // Hide the grapple arm
+            isReturning = true;
         }
     }
 
-    private void GrappleToTarget()
+    void ReturnGrappleArm()
     {
-        if (currentGrappleTarget == null) return;
+        grappleArm.position = Vector3.MoveTowards(grappleArm.position, player.position, returnSpeed * Time.deltaTime);
 
-        // Calculate direction to the grapple target
-        Vector3 directionToTarget = (currentGrappleTarget.position - transform.position).normalized;
-
-        // Change the player's velocity to move towards the target
-        Rigidbody rb = GetComponent<Rigidbody>();
-        rb.velocity = directionToTarget * grappleForce;
-
-        // Optionally, you could rotate the player to face the target
-        Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
-
-        // Optionally, add a check to stop the grapple once the player reaches the target
-        if (Vector3.Distance(transform.position, currentGrappleTarget.position) < 1f)
+        if (Vector3.Distance(grappleArm.position, player.position) < 0.5f)
         {
-            isGrappling = false;
-            currentGrappleTarget = null;
+            isReturning = false;
+        }
+    }
+
+    void PullPlayerToTarget()
+    {
+        player.position = Vector3.MoveTowards(player.position, grappleTargetPosition, grappleMoveSpeed * Time.deltaTime);
+
+        if (Vector3.Distance(player.position, grappleTargetPosition) < 0.5f)
+        {
+            isPullingPlayer = false;
+            isReturning = true;
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Grapple arm hit: " + other.gameObject.name); // Show what the arm is touching
+
+        if (isShooting && other.CompareTag("GrappleTarget"))
+        {
+            Debug.Log("Hit a grapple target! Pulling player.");
+            isShooting = false;
+            isPullingPlayer = true;
+            grappleTargetPosition = grappleArm.position;
         }
     }
 }
