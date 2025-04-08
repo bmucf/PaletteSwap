@@ -5,14 +5,21 @@ TagManager:
   serializedVersion: 2
   tags:
   - GrappleTarget
+  - Red
+  - Blue
+  - Yellow
+  - RedPedestal
+  - BluePedestal
+  - YellowPedestal
+  - Enemy
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - PlayerLayer
   - Water
   - UI
-  - 
+  - GrappleTarget
   - 
   - 
   - 
