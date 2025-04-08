@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -90,7 +91,6 @@ public class EnemyAI : MonoBehaviour
         isRotating = false;
     }
 
-    // Trigger area for chasing the player (no damage yet)
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -100,19 +100,16 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    // Stop chasing when player leaves trigger area
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             isChasing = false;
             player = null;
-            // If the player leaves, return to waypoint movement
             targetWaypoint = waypoints[currentWaypointIndex];
         }
     }
 
-    // Detect when the skeleton physically collides with the player to deal damage
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -120,7 +117,13 @@ public class EnemyAI : MonoBehaviour
             Health playerHealth = collision.gameObject.GetComponent<Health>();
             if (playerHealth != null)
             {
-                playerHealth.TakeDamage(100); // Call TakeDamage() to apply damage and potentially kill
+                playerHealth.TakeDamage(); // Apply damage to the player
+
+                // Restart the level if player's health is 0 after taking damage
+                if (playerHealth.health <= 0)
+                {
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Restart the level
+                }
             }
         }
     }
@@ -130,7 +133,7 @@ public class EnemyAI : MonoBehaviour
         if (player != null)
         {
             Vector3 targetPosition = player.position;
-            targetPosition.y = transform.position.y; // Keep skeleton on the ground
+            targetPosition.y = transform.position.y;
 
             Vector3 direction = (targetPosition - transform.position).normalized;
             Move(direction);
@@ -140,8 +143,7 @@ public class EnemyAI : MonoBehaviour
 
     void Move(Vector3 direction)
     {
-        // Use MovePosition for smooth physics movement
         Vector3 targetPosition = transform.position + direction * moveSpeed * Time.fixedDeltaTime;
-        rb.MovePosition(targetPosition); // Moves skeleton smoothly
+        rb.MovePosition(targetPosition);
     }
 }

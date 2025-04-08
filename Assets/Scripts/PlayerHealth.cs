@@ -3,27 +3,16 @@ using UnityEngine.SceneManagement;
 
 public class Health : MonoBehaviour
 {
-    public int maxHealth = 1;
-    private int currentHealth;
+    public int health = 100;
 
-    void Start()
+    public void TakeDamage()
     {
-        currentHealth = maxHealth;
-    }
+        health -= 10; // or whatever value you want to reduce
 
-    public void TakeDamage(int damageAmount = 1)
-    {
-        currentHealth -= damageAmount;
-        Debug.Log("Player Health: " + currentHealth);
-
-        if (currentHealth <= 0)
+        if (health <= 0)
         {
-            Die();
+            // Restart the current scene instantly when health reaches 0
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
-    }
-
-    void Die()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

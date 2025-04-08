@@ -8,6 +8,7 @@ public class PlayerGrapple : MonoBehaviour
     public float returnSpeed = 20f; // Speed of returning the grapple arm
     public float grappleMoveSpeed = 15f; // Speed at which player moves to the target
     public float maxGrappleDistance = 20f; // Max range of grapple
+    public float sphereCastRadius = 0.5f; // Radius of the sphere cast for detecting targets
     public Transform player; // The player
     public Transform grappleArm; // The grapple arm (small cube)
     public LayerMask grappleLayer; // Layer for valid grapple targets
@@ -38,6 +39,12 @@ public class PlayerGrapple : MonoBehaviour
         if (isPullingPlayer)
         {
             PullPlayerToTarget();
+        }
+
+        // Check for a grapple target using SphereCast
+        if (isShooting)
+        {
+            DetectGrappleTarget();
         }
     }
 
@@ -85,16 +92,19 @@ public class PlayerGrapple : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    // Detect grapple target using SphereCast
+    void DetectGrappleTarget()
     {
-        Debug.Log("Grapple arm hit: " + other.gameObject.name); // Show what the arm is touching
-
-        if (isShooting && other.CompareTag("GrappleTarget"))
+        RaycastHit hit;
+        if (Physics.SphereCast(grappleArm.position, sphereCastRadius, shootDirection, out hit, maxGrappleDistance, grappleLayer))
         {
-            Debug.Log("Hit a grapple target! Pulling player.");
-            isShooting = false;
-            isPullingPlayer = true;
-            grappleTargetPosition = grappleArm.position;
+            if (hit.collider.CompareTag("GrappleTarget"))
+            {
+                Debug.Log("Hit a grapple target! Pulling player.");
+                isShooting = false;
+                isPullingPlayer = true;
+                grappleTargetPosition = hit.point; // Set target to hit point
+            }
         }
     }
 }

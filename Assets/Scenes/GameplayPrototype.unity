@@ -720,7 +720,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 038af9c060e62c84a8203ff3044277a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 1
+  health: 100
 --- !u!114 &140924993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -733,10 +733,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c908f94f08fc8834a8c15b74c4d9bd48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootSpeed: 20
-  returnSpeed: 40
-  grappleMoveSpeed: 10
+  shootSpeed: 300
+  returnSpeed: 200
+  grappleMoveSpeed: 400
   maxGrappleDistance: 20
+  sphereCastRadius: 0.5
   player: {fileID: 140924988}
   grappleArm: {fileID: 1039012956}
   grappleLayer:
@@ -2342,7 +2343,7 @@ MonoBehaviour:
   - {fileID: 1819937606}
   moveSpeed: 3
   rotationSpeed: 5
-  detectionRange: 17
+  detectionRange: 5
 --- !u!195 &373357309
 NavMeshAgent:
   m_ObjectHideFlags: 0
