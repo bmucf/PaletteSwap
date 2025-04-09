@@ -1,34 +1,56 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerGrapple : MonoBehaviour
 {
-    public float shootSpeed = 30f; // Speed of the grapple arm
-    public float returnSpeed = 20f; // Speed of returning the grapple arm
-    public float grappleMoveSpeed = 15f; // Speed at which player moves to the target
-    public float maxGrappleDistance = 20f; // Max range of grapple
-    public float sphereCastRadius = 0.5f; // Radius of the sphere cast for detecting targets
-    public Transform player; // The player
-    public Transform grappleArm; // The grapple arm (small cube)
-    public LayerMask grappleLayer; // Layer for valid grapple targets
+    public float shootSpeed = 30f;
+    public float returnSpeed = 20f;
+    public float grappleMoveSpeed = 15f;
+    public float maxGrappleDistance = 20f;
+    public float sphereCastRadius = 0.5f;
+    public Transform player;
+    public Transform grappleArm;
+    public LayerMask grappleLayer;
 
-    private Vector3 shootDirection; // Direction the grapple arm moves
+    private Vector3 shootDirection;
     private bool isShooting = false;
     private bool isReturning = false;
     private bool isPullingPlayer = false;
     private Vector3 grappleTargetPosition;
 
+    private CharacterController controller;
+    private PlayerInputActions inputActions;
+
+    void Awake()
+    {
+        inputActions = new PlayerInputActions();
+    }
+
+    void OnEnable()
+    {
+        inputActions.Gameplay.Enable();
+        inputActions.Gameplay.Grapple.performed += OnGrappleInput;
+    }
+
+    void OnDisable()
+    {
+        inputActions.Gameplay.Grapple.performed -= OnGrappleInput;
+        inputActions.Gameplay.Disable();
+    }
+
+    void Start()
+    {
+        controller = player.GetComponent<CharacterController>();
+    }
+
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !isShooting && !isReturning && !isPullingPlayer)
-        {
-            ShootGrappleArm();
-        }
-
         if (isShooting)
         {
             MoveGrappleArm();
+            DetectGrappleTarget();
         }
 
         if (isReturning)
@@ -40,11 +62,13 @@ public class PlayerGrapple : MonoBehaviour
         {
             PullPlayerToTarget();
         }
+    }
 
-        // Check for a grapple target using SphereCast
-        if (isShooting)
+    void OnGrappleInput(InputAction.CallbackContext context)
+    {
+        if (!isShooting && !isReturning && !isPullingPlayer)
         {
-            DetectGrappleTarget();
+            ShootGrappleArm();
         }
     }
 
@@ -55,7 +79,6 @@ public class PlayerGrapple : MonoBehaviour
         isReturning = false;
         isPullingPlayer = false;
 
-        // Set the direction based on where the player is looking
         shootDirection = Camera.main.transform.forward;
     }
 
@@ -63,7 +86,6 @@ public class PlayerGrapple : MonoBehaviour
     {
         grappleArm.position += shootDirection * shootSpeed * Time.deltaTime;
 
-        // If the arm goes too far without hitting anything, return
         if (Vector3.Distance(grappleArm.position, player.position) > maxGrappleDistance)
         {
             isShooting = false;
@@ -83,16 +105,21 @@ public class PlayerGrapple : MonoBehaviour
 
     void PullPlayerToTarget()
     {
-        player.position = Vector3.MoveTowards(player.position, grappleTargetPosition, grappleMoveSpeed * Time.deltaTime);
+        Vector3 direction = (grappleTargetPosition - player.position);
+        float distanceToMove = grappleMoveSpeed * Time.deltaTime;
 
-        if (Vector3.Distance(player.position, grappleTargetPosition) < 0.5f)
+        if (direction.magnitude <= distanceToMove)
         {
+            controller.Move(direction);
             isPullingPlayer = false;
             isReturning = true;
         }
+        else
+        {
+            controller.Move(direction.normalized * distanceToMove);
+        }
     }
 
-    // Detect grapple target using SphereCast
     void DetectGrappleTarget()
     {
         RaycastHit hit;
@@ -103,7 +130,7 @@ public class PlayerGrapple : MonoBehaviour
                 Debug.Log("Hit a grapple target! Pulling player.");
                 isShooting = false;
                 isPullingPlayer = true;
-                grappleTargetPosition = hit.point; // Set target to hit point
+                grappleTargetPosition = hit.point;
             }
         }
     }

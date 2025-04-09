@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
@@ -8,16 +9,18 @@ public class PlayerController : MonoBehaviour
     public CharacterController controller;
     public Transform cameraTransform;
     public Transform playerModel;
-    public Image crosshair; 
+    public Image crosshair;
     public float speed = 5f;
     public float jumpHeight = 2f;
     public float gravity = -9.81f;
     public float glideGravity = -2f;
     public float minGlideHeight = 2f;
-    public float mouseSensitivity = 2f;
+    public float mouseSensitivity = 0.1f;
+    public float controllerSensitivity = 2.5f;
     public float cameraPitchLimit = 80f;
     public float squashScale = 0.5f;
     public float squashSpeed = 5f;
+    public float lookSmoothTime = 0.05f;
 
     private Vector3 velocity;
     private bool isGrounded;
@@ -26,24 +29,37 @@ public class PlayerController : MonoBehaviour
     private bool isSquashing;
     private bool isGliding;
 
+    private PlayerInputActions inputActions;
+    private Vector2 moveInput;
+    private Vector2 lookDelta;
+    private Vector2 smoothLook;
+    private bool jumpPressed = false;
+
+    void Awake()
+    {
+        inputActions = new PlayerInputActions();
+        inputActions.Gameplay.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
+        inputActions.Gameplay.Move.canceled += ctx => moveInput = Vector2.zero;
+
+        inputActions.Gameplay.Look.performed += ctx => lookDelta = ctx.ReadValue<Vector2>();
+        inputActions.Gameplay.Look.canceled += ctx => lookDelta = Vector2.zero;
+
+        inputActions.Gameplay.Jump.performed += ctx => jumpPressed = true;
+    }
+
+    void OnEnable() => inputActions.Gameplay.Enable();
+    void OnDisable() => inputActions.Gameplay.Disable();
+
     void Start()
     {
         originalScale = playerModel.localScale;
         crosshair.enabled = true;
-
-        // Hide and lock cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) // Press ESC to unlock cursor
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-
         isGrounded = controller.isGrounded;
         if (isGrounded)
         {
@@ -52,58 +68,63 @@ public class PlayerController : MonoBehaviour
         }
 
         HandleMovement();
+        HandleLook();
         HandleSquashing();
         HandleGliding();
 
         velocity.y += (isGliding ? glideGravity : gravity) * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+
+        jumpPressed = false; // Reset after using
     }
 
     void HandleMovement()
     {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
-        Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
-
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
-
-        transform.Rotate(Vector3.up * mouseX);
-
-        cameraPitch -= mouseY;
-        cameraPitch = Mathf.Clamp(cameraPitch, -cameraPitchLimit, cameraPitchLimit);
-        cameraTransform.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
+        Vector3 direction = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
 
         if (direction.magnitude >= 0.1f)
         {
             Vector3 moveDirection = transform.forward * direction.z + transform.right * direction.x;
             controller.Move(moveDirection.normalized * speed * Time.deltaTime);
         }
-
         else if (isGrounded)
         {
-            velocity.x = 0f; // Stop residual movement
+            velocity.x = 0f;
             velocity.z = 0f;
         }
 
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (jumpPressed && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
     }
 
+    void HandleLook()
+    {
+        Vector2 inputLook = Vector2.zero;
+
+        if (Mouse.current != null && Mouse.current.delta.ReadValue() != Vector2.zero)
+        {
+            inputLook = Mouse.current.delta.ReadValue() * mouseSensitivity;
+        }
+        else if (Gamepad.current != null)
+        {
+            Vector2 stick = Gamepad.current.rightStick.ReadValue();
+            inputLook = stick * controllerSensitivity * Time.deltaTime * 100;
+        }
+
+        smoothLook = Vector2.Lerp(smoothLook, inputLook, 1 - Mathf.Exp(-Time.deltaTime / lookSmoothTime));
+
+        transform.Rotate(Vector3.up * smoothLook.x);
+
+        cameraPitch -= smoothLook.y;
+        cameraPitch = Mathf.Clamp(cameraPitch, -cameraPitchLimit, cameraPitchLimit);
+        cameraTransform.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
+    }
+
     void HandleSquashing()
     {
-        if (Input.GetKey(KeyCode.LeftControl))
-        {
-            isSquashing = true;
-        }
-
-        else
-        {
-            isSquashing = false;
-        }
-
+        isSquashing = Keyboard.current.leftCtrlKey.isPressed;
         Vector3 targetScale = isSquashing
             ? new Vector3(originalScale.x * 1.2f, originalScale.y * squashScale, originalScale.z * 1.2f)
             : originalScale;
@@ -112,7 +133,8 @@ public class PlayerController : MonoBehaviour
 
     void HandleGliding()
     {
-        if (!isGrounded && transform.position.y > minGlideHeight && Input.GetKey(KeyCode.Space))
+        bool spaceHeld = Keyboard.current.spaceKey.isPressed || Gamepad.current?.buttonSouth.isPressed == true;
+        if (!isGrounded && transform.position.y > minGlideHeight && spaceHeld)
         {
             isGliding = true;
         }
