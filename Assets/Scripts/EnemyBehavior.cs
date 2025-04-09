@@ -1,7 +1,4 @@
 using UnityEngine;
-using System.Collections;
-using UnityEngine.AI;
-using UnityEngine.SceneManagement;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -12,14 +9,13 @@ public class EnemyAI : MonoBehaviour
 
     private int currentWaypointIndex = 0;
     private Transform targetWaypoint;
-    private bool isRotating = false;
     private Transform player;
     private bool isChasing = false;
     private Rigidbody rb;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>(); // Get the Rigidbody component
+        rb = GetComponent<Rigidbody>();
 
         if (waypoints.Length > 0)
         {
@@ -27,19 +23,17 @@ public class EnemyAI : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("No waypoints assigned to SkeletonGuard.");
+            Debug.LogWarning("No waypoints assigned.");
         }
     }
 
     void FixedUpdate()
     {
-        // If chasing player, move toward the player
         if (isChasing && player != null)
         {
             ChasePlayer();
         }
-        // If not chasing, move between waypoints
-        else if (!isRotating)
+        else
         {
             MoveToWaypoint();
         }
@@ -47,19 +41,17 @@ public class EnemyAI : MonoBehaviour
 
     void MoveToWaypoint()
     {
-        // If the skeleton is close to the current waypoint, move to the next
-        if (Vector3.Distance(transform.position, targetWaypoint.position) < 0.5f)
+        if (Vector3.Distance(transform.position, targetWaypoint.position) < 1.0f)
         {
-            StartCoroutine(RotateToNextWaypoint());
+            currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
+            targetWaypoint = waypoints[currentWaypointIndex];
         }
-        else
-        {
-            Vector3 direction = (targetWaypoint.position - transform.position).normalized;
-            direction.y = 0; // Keep the movement on the ground
 
-            Move(direction);
-            RotateTowards(direction);
-        }
+        Vector3 direction = (targetWaypoint.position - transform.position).normalized;
+        direction.y = 0;
+
+        Move(direction);
+        RotateTowards(direction);
     }
 
     void RotateTowards(Vector3 direction)
@@ -69,26 +61,6 @@ public class EnemyAI : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             rb.MoveRotation(Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * rotationSpeed));
         }
-    }
-
-    IEnumerator RotateToNextWaypoint()
-    {
-        isRotating = true;
-        currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
-        Vector3 direction = (waypoints[currentWaypointIndex].position - transform.position).normalized;
-        direction.y = 0;
-
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
-
-        while (Quaternion.Angle(transform.rotation, targetRotation) > 1f)
-        {
-            rb.MoveRotation(Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * rotationSpeed));
-            yield return null;
-        }
-
-        rb.MoveRotation(targetRotation);
-        targetWaypoint = waypoints[currentWaypointIndex];
-        isRotating = false;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -107,24 +79,6 @@ public class EnemyAI : MonoBehaviour
             isChasing = false;
             player = null;
             targetWaypoint = waypoints[currentWaypointIndex];
-        }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            Health playerHealth = collision.gameObject.GetComponent<Health>();
-            if (playerHealth != null)
-            {
-                playerHealth.TakeDamage(); // Apply damage to the player
-
-                // Restart the level if player's health is 0 after taking damage
-                if (playerHealth.health <= 0)
-                {
-                    SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Restart the level
-                }
-            }
         }
     }
 
