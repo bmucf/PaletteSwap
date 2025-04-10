@@ -21,7 +21,7 @@ public class GateBlue : MonoBehaviour
     private void OpenGate()
     {
         Debug.Log("Gate opened!");
-        GetComponent<Collider>().enabled = false;
+        Destroy(gameObject);
 
         // Activate the gem so it can now be collected
         if (gem != null)
