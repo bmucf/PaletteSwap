@@ -11,8 +11,8 @@ public class Health : MonoBehaviour
 
         if (health <= 0)
         {
-            // Restart the current scene instantly when health reaches 0
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            // Load the Game Over scene when health reaches 0
+            SceneManager.LoadScene("GameOver");
         }
     }
 }

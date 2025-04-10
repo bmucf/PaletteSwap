@@ -7,8 +7,10 @@ public class EnemyAttack : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // Restart the current scene
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
+            SceneManager.LoadScene("GameOver");
         }
     }
 }

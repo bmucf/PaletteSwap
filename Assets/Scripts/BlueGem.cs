@@ -22,7 +22,10 @@ public class BlueGem : MonoBehaviour
     {
         if (gemCollider.enabled && other.CompareTag("Player"))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
+            SceneManager.LoadScene("Win");
         }
     }
 }
