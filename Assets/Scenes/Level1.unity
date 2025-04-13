@@ -9229,6 +9229,7 @@ GameObject:
   - component: {fileID: 500459253}
   - component: {fileID: 500459252}
   - component: {fileID: 500459251}
+  - component: {fileID: 500459257}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -9365,6 +9366,21 @@ Transform:
   - {fileID: 935854517}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &500459257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 500459250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48b5ed120ab14484fb4dc2ea90a50cd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hand: {fileID: 1760408494}
+  reachDuration: 0.3
+  returnDuration: 0.2
 --- !u!4 &500803820 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 82629585173488352, guid: 49494abf0ec370a4a9fb4e008aa62206,
@@ -19923,7 +19939,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 986534504}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -35412,6 +35428,12 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -7840330913872229149, guid: 3231539af2665c248a30f403d52410fd, type: 3}
+--- !u!4 &1760408494 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -5846270692196909274, guid: d3e5ac1379c6ccb44ab361310ce084a9,
+    type: 3}
+  m_PrefabInstance: {fileID: 1263333240}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1760637825 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 233022684973042137, guid: 49494abf0ec370a4a9fb4e008aa62206,

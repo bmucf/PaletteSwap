@@ -22,6 +22,8 @@ public class PlayerGrapple : MonoBehaviour
 
     private CharacterController controller;
     private PlayerInputActions inputActions;
+    private GrappleHand grappleHand;
+
 
     void Awake()
     {
@@ -43,6 +45,8 @@ public class PlayerGrapple : MonoBehaviour
     void Start()
     {
         controller = player.GetComponent<CharacterController>();
+        grappleHand = GetComponent<GrappleHand>();
+
     }
 
     void Update()
@@ -127,11 +131,29 @@ public class PlayerGrapple : MonoBehaviour
         {
             if (hit.collider.CompareTag("GrappleTarget"))
             {
-                Debug.Log("Hit a grapple target! Pulling player.");
+                Debug.Log("Hit a grapple target! Pulling player after delay.");
                 isShooting = false;
-                isPullingPlayer = true;
                 grappleTargetPosition = hit.point;
+
+                if (grappleHand != null)
+                {
+                    grappleHand.FireToTarget(grappleTargetPosition);
+                }
+
+                StartCoroutine(DelayBeforePull());
             }
+
         }
     }
+    IEnumerator DelayBeforePull()
+    {
+        yield return new WaitForSeconds(0.4f);
+        if (grappleHand != null)
+        {
+
+        }
+
+        isPullingPlayer = true;
+    }
+
 }
