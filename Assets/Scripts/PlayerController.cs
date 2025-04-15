@@ -7,9 +7,14 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     public CharacterController controller;
+
     public Transform cameraTransform;
+    public Transform cameraPivot; // New: for vertical pitch rotation
     public Transform playerModel;
     public Image crosshair;
+    public Vector3 cameraOffset = new Vector3(0.5f, 0f, -3.5f);
+
+
     public float speed = 5f;
     public float jumpHeight = 2f;
     public float gravity = -9.81f;
@@ -78,7 +83,17 @@ public class PlayerController : MonoBehaviour
         jumpPressed = false; // Reset after using
     }
 
-    void HandleMovement()
+    void LateUpdate()
+    {
+        if (cameraPivot != null && playerModel != null)
+        {
+            cameraPivot.position = playerModel.position + Vector3.up * 1.5f; // Adjust for shoulder height
+            cameraTransform.localPosition = cameraOffset; // Fixed shoulder offset
+        }
+    }
+
+
+void HandleMovement()
     {
         Vector3 direction = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
 
@@ -110,16 +125,18 @@ public class PlayerController : MonoBehaviour
         else if (Gamepad.current != null)
         {
             Vector2 stick = Gamepad.current.rightStick.ReadValue();
-            inputLook = stick * controllerSensitivity * Time.deltaTime * 100;
+            inputLook = stick * controllerSensitivity * Time.deltaTime * 100f;
         }
 
         smoothLook = Vector2.Lerp(smoothLook, inputLook, 1 - Mathf.Exp(-Time.deltaTime / lookSmoothTime));
 
+        // Rotate the player horizontally (Y-axis)
         transform.Rotate(Vector3.up * smoothLook.x);
 
+        // Rotate the cameraPivot vertically (pitch)
         cameraPitch -= smoothLook.y;
         cameraPitch = Mathf.Clamp(cameraPitch, -cameraPitchLimit, cameraPitchLimit);
-        cameraTransform.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
+        cameraPivot.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
     }
 
     void HandleSquashing()
