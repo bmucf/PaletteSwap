@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     public Transform cameraPivot; // New: for vertical pitch rotation
     public Transform playerModel;
     public Image crosshair;
-    public Vector3 cameraOffset = new Vector3(0.5f, 0f, -3.5f);
+    public Vector3 cameraOffset = new Vector3(0.5f, 0f, -4f);
 
 
     public float speed = 5f;
