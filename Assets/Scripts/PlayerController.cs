@@ -1,55 +1,61 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("References")]
     public CharacterController controller;
-
     public Transform cameraTransform;
-    public Transform cameraPivot; // New: for vertical pitch rotation
+    public Transform cameraPivot;
     public Transform playerModel;
     public Image crosshair;
+    public Animator animator;
+
+    [Header("Camera Settings")]
     public Vector3 cameraOffset = new Vector3(0.5f, 0f, -4f);
+    public float mouseSensitivity = 0.1f;
+    public float controllerSensitivity = 2.5f;
+    public float cameraPitchLimit = 80f;
+    public float lookSmoothTime = 0.05f;
 
-
+    [Header("Movement Settings")]
     public float speed = 5f;
     public float jumpHeight = 2f;
     public float gravity = -9.81f;
     public float glideGravity = -2f;
     public float minGlideHeight = 2f;
-    public float mouseSensitivity = 0.1f;
-    public float controllerSensitivity = 2.5f;
-    public float cameraPitchLimit = 80f;
+
+    [Header("Squash Settings")]
     public float squashScale = 0.5f;
     public float squashSpeed = 5f;
-    public float lookSmoothTime = 0.05f;
-
-    private Vector3 velocity;
-    private bool isGrounded;
-    private float cameraPitch = 0f;
-    private Vector3 originalScale;
-    private bool isSquashing;
-    private bool isGliding;
 
     private PlayerInputActions inputActions;
     private Vector2 moveInput;
     private Vector2 lookDelta;
     private Vector2 smoothLook;
-    private bool jumpPressed = false;
+
+    private Vector3 velocity;
+    private bool isGrounded;
+    private bool isGliding;
+    private bool isSquashing;
+    private bool jumpPressed;
+
+    private float cameraPitch = 0f;
+    private Vector3 originalScale;
 
     void Awake()
     {
         inputActions = new PlayerInputActions();
+
         inputActions.Gameplay.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
-        inputActions.Gameplay.Move.canceled += ctx => moveInput = Vector2.zero;
+        inputActions.Gameplay.Move.canceled += _ => moveInput = Vector2.zero;
 
         inputActions.Gameplay.Look.performed += ctx => lookDelta = ctx.ReadValue<Vector2>();
-        inputActions.Gameplay.Look.canceled += ctx => lookDelta = Vector2.zero;
+        inputActions.Gameplay.Look.canceled += _ => lookDelta = Vector2.zero;
 
-        inputActions.Gameplay.Jump.performed += ctx => jumpPressed = true;
+        inputActions.Gameplay.Jump.performed += _ => jumpPressed = true;
     }
 
     void OnEnable() => inputActions.Gameplay.Enable();
@@ -57,8 +63,14 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        if (playerModel != null)
+            animator = playerModel.GetComponent<Animator>();
+        else
+            Debug.LogError("Player Model is not assigned!");
+
         originalScale = playerModel.localScale;
         crosshair.enabled = true;
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -66,74 +78,79 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         isGrounded = controller.isGrounded;
-        if (isGrounded)
-        {
-            velocity.y = -2f;
-            isGliding = false;
-        }
 
         HandleMovement();
         HandleLook();
         HandleSquashing();
         HandleGliding();
+        UpdateAnimationStates();
 
+        // Apply vertical velocity
         velocity.y += (isGliding ? glideGravity : gravity) * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
-        jumpPressed = false; // Reset after using
+        // Reset jump flag each frame
+        jumpPressed = false;
     }
+    void UpdateAnimationStates()
+    {
+        float horizontalSpeed = new Vector3(controller.velocity.x, 0f, controller.velocity.z).magnitude;
+        bool isMoving = horizontalSpeed > 0.1f;
+
+        animator.SetBool("isRunning", isGrounded && isMoving);
+        animator.SetBool("isGliding", isGliding);
+    }
+
+
 
     void LateUpdate()
     {
-        if (cameraPivot != null && playerModel != null)
+        if (cameraPivot && playerModel)
         {
-            cameraPivot.position = playerModel.position + Vector3.up * 1.5f; // Adjust for shoulder height
-            cameraTransform.localPosition = cameraOffset; // Fixed shoulder offset
+            cameraPivot.position = playerModel.position + Vector3.up * 1.5f;
+            cameraTransform.localPosition = cameraOffset;
         }
     }
 
-
-void HandleMovement()
+    void HandleMovement()
     {
         Vector3 direction = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
+        float speed = direction.magnitude;
 
-        if (direction.magnitude >= 0.1f)
+        // Log moveInput and speed to verify input and movement
+        Debug.Log($"Move Input: {moveInput}, Speed: {speed}");
+
+        if (speed >= 0.1f)
         {
+            animator.SetBool("isRunning", true);  // Set isRunning to true if moving
+            animator.SetFloat("Speed", speed);  // Update speed parameter
             Vector3 moveDirection = transform.forward * direction.z + transform.right * direction.x;
-            controller.Move(moveDirection.normalized * speed * Time.deltaTime);
+            controller.Move(moveDirection.normalized * this.speed * Time.deltaTime);
         }
-        else if (isGrounded)
+        else
         {
-            velocity.x = 0f;
-            velocity.z = 0f;
+            animator.SetBool("isRunning", false);  // Set isRunning to false when idle
+            animator.SetFloat("Speed", 0f);  // Update speed parameter to 0 when idle
         }
 
         if (jumpPressed && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            animator.SetTrigger("Jump");  // Trigger jump animation
         }
     }
 
+
     void HandleLook()
     {
-        Vector2 inputLook = Vector2.zero;
-
-        if (Mouse.current != null && Mouse.current.delta.ReadValue() != Vector2.zero)
-        {
-            inputLook = Mouse.current.delta.ReadValue() * mouseSensitivity;
-        }
-        else if (Gamepad.current != null)
-        {
-            Vector2 stick = Gamepad.current.rightStick.ReadValue();
-            inputLook = stick * controllerSensitivity * Time.deltaTime * 100f;
-        }
+        Vector2 inputLook = Mouse.current != null
+            ? Mouse.current.delta.ReadValue() * mouseSensitivity
+            : Gamepad.current?.rightStick.ReadValue() * controllerSensitivity * Time.deltaTime * 100f ?? Vector2.zero;
 
         smoothLook = Vector2.Lerp(smoothLook, inputLook, 1 - Mathf.Exp(-Time.deltaTime / lookSmoothTime));
 
-        // Rotate the player horizontally (Y-axis)
         transform.Rotate(Vector3.up * smoothLook.x);
 
-        // Rotate the cameraPivot vertically (pitch)
         cameraPitch -= smoothLook.y;
         cameraPitch = Mathf.Clamp(cameraPitch, -cameraPitchLimit, cameraPitchLimit);
         cameraPivot.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
@@ -142,22 +159,28 @@ void HandleMovement()
     void HandleSquashing()
     {
         isSquashing = Keyboard.current.leftCtrlKey.isPressed;
+
         Vector3 targetScale = isSquashing
             ? new Vector3(originalScale.x * 1.2f, originalScale.y * squashScale, originalScale.z * 1.2f)
             : originalScale;
+
         playerModel.localScale = Vector3.Lerp(playerModel.localScale, targetScale, Time.deltaTime * squashSpeed);
     }
 
     void HandleGliding()
     {
         bool spaceHeld = Keyboard.current.spaceKey.isPressed || Gamepad.current?.buttonSouth.isPressed == true;
+
+        // Start gliding only if airborne, above the minimum glide height, and space is held
         if (!isGrounded && transform.position.y > minGlideHeight && spaceHeld)
         {
             isGliding = true;
+            animator.SetBool("IsGliding", true);  // Set gliding state in Animator
         }
         else
         {
             isGliding = false;
+            animator.SetBool("IsGliding", false);  // Stop gliding state in Animator when grounded or too low
         }
     }
 }
