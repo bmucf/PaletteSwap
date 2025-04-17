@@ -12,6 +12,8 @@ TagManager:
   - BluePedestal
   - YellowPedestal
   - Enemy
+  - VictoryCamera
+  - Victory
   layers:
   - Default
   - TransparentFX

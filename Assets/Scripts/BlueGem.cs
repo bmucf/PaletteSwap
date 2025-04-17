@@ -1,18 +1,27 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class BlueGem : MonoBehaviour
-{ 
+{
     private Collider gemCollider;
+
+    public GameObject victoryCamera;
+    public Animator playerAnimator;
+    public MonoBehaviour playerControlScript;
+    public float delayBeforeWinScreen = 5f;
+    public GameObject victoryPlayerModel;
+    public GameObject originalPlayerModel;
 
     private void Start()
     {
-        // Cache the collider and disable it at start
         gemCollider = GetComponent<Collider>();
         gemCollider.enabled = false;
+
+        if (victoryCamera != null)
+            victoryCamera.SetActive(false);
     }
 
-    // This method will be called when the gate opens
     public void Activate()
     {
         gemCollider.enabled = true;
@@ -22,10 +31,61 @@ public class BlueGem : MonoBehaviour
     {
         if (gemCollider.enabled && other.CompareTag("Player"))
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-
-            SceneManager.LoadScene("Win");
+            // Play victory scene
+            StartCoroutine(PlayVictorySequence(other.gameObject));
         }
     }
+
+    private IEnumerator PlayVictorySequence(GameObject player)
+    {
+        // Disable the original player model
+        if (originalPlayerModel != null)
+            originalPlayerModel.SetActive(false);
+
+        // Enable the new victory model (the one with the victory animation)
+        if (victoryPlayerModel != null)
+            victoryPlayerModel.SetActive(true);
+
+        // Disable the movement script of the new player model (if any)
+        if (victoryPlayerModel.GetComponent<MonoBehaviour>() != null)
+            victoryPlayerModel.GetComponent<MonoBehaviour>().enabled = false;
+
+        gemCollider.enabled = false;
+
+        // Lock the mouse during the cutscene
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        // Disable all cameras to avoid interference
+        foreach (Camera cam in Camera.allCameras)
+        {
+            cam.enabled = false;
+        }
+
+        // Enable the victory camera
+        if (victoryCamera != null)
+        {
+            victoryCamera.SetActive(true);
+        }
+        else
+        {
+            Debug.LogWarning("Victory camera not assigned!");
+        }
+
+        // Trigger the victory animation
+        if (victoryPlayerModel.GetComponent<Animator>() != null)
+        {
+            victoryPlayerModel.GetComponent<Animator>().SetTrigger("Victory");
+        }
+
+        yield return new WaitForSeconds(delayBeforeWinScreen);
+
+        // Restore cursor settings for the next scene
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        // Load the win screen
+        SceneManager.LoadScene("Win");
+    }
+
 }
