@@ -12,6 +12,8 @@ public class EnemyAI : MonoBehaviour
     private Transform player;
     private bool isChasing = false;
     private Rigidbody rb;
+    private bool isAttacking = false;
+
 
     void Start()
     {
@@ -29,6 +31,11 @@ public class EnemyAI : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isAttacking)
+        {
+            return;
+        }
+
         if (isChasing && player != null)
         {
             ChasePlayer();
@@ -38,6 +45,7 @@ public class EnemyAI : MonoBehaviour
             MoveToWaypoint();
         }
     }
+
 
     void MoveToWaypoint()
     {
@@ -100,4 +108,16 @@ public class EnemyAI : MonoBehaviour
         Vector3 targetPosition = transform.position + direction * moveSpeed * Time.fixedDeltaTime;
         rb.MovePosition(targetPosition);
     }
+    public void Attack()
+    {
+        isAttacking = true;
+        isChasing = false;
+
+        // Optional: stop all movement when attacking
+        rb.velocity = Vector3.zero;
+
+        // Optionally: play attack animation
+        // animator.SetTrigger("Attack"); // if using Animator
+    }
+
 }

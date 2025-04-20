@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     public Transform playerModel;
     public Image crosshair;
     public Animator animator;
+    public bool canMove = true;
+
 
     [Header("Camera Settings")]
     public Vector3 cameraOffset = new Vector3(0.5f, 0f, -4f);
@@ -114,29 +116,31 @@ public class PlayerController : MonoBehaviour
 
     void HandleMovement()
     {
+        if (!canMove) return;
+
         Vector3 direction = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
         float speed = direction.magnitude;
 
-        // Log moveInput and speed to verify input and movement
         Debug.Log($"Move Input: {moveInput}, Speed: {speed}");
 
         if (speed >= 0.1f)
         {
-            animator.SetBool("isRunning", true);  // Set isRunning to true if moving
-            animator.SetFloat("Speed", speed);  // Update speed parameter
+            animator.SetBool("isRunning", true);
+            animator.SetFloat("Speed", speed);
             Vector3 moveDirection = transform.forward * direction.z + transform.right * direction.x;
             controller.Move(moveDirection.normalized * this.speed * Time.deltaTime);
         }
         else
         {
-            animator.SetBool("isRunning", false);  // Set isRunning to false when idle
-            animator.SetFloat("Speed", 0f);  // Update speed parameter to 0 when idle
+            animator.SetBool("isRunning", false);
+            animator.SetFloat("Speed", 0f);
         }
 
         if (jumpPressed && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            animator.SetTrigger("Jump");  // Trigger jump animation
+            animator.SetTrigger("Jump");
+            GetComponent<Animator>().SetBool("isGrounded", true);
         }
     }
 
@@ -181,6 +185,7 @@ public class PlayerController : MonoBehaviour
         {
             isGliding = false;
             animator.SetBool("IsGliding", false);  // Stop gliding state in Animator when grounded or too low
+            GetComponent<Animator>().SetBool("isGrounded", true);
         }
     }
 }

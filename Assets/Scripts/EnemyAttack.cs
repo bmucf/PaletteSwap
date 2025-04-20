@@ -1,16 +1,18 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class EnemyAttack : MonoBehaviour
 {
+    public Animator animator;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-
-            SceneManager.LoadScene("GameOver");
+            Health health = other.GetComponent<Health>();
+            if (health != null)
+            {
+                health.TakeDamage();
+                animator.SetTrigger("Die");
+            }
         }
     }
 }

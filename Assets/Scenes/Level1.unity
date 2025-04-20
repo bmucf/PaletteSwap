@@ -2422,6 +2422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b331e2f1249fb0543b3737a9cc08281b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 1079740387}
 --- !u!1 &117726617 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 233022684973042137, guid: 49494abf0ec370a4a9fb4e008aa62206,
@@ -9618,6 +9619,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b331e2f1249fb0543b3737a9cc08281b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 1079740387}
 --- !u!1001 &543389071
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18021,6 +18023,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b331e2f1249fb0543b3737a9cc08281b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 1079740387}
 --- !u!1001 &921085662
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21245,6 +21248,12 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -7840330913872229149, guid: 3231539af2665c248a30f403d52410fd, type: 3}
+--- !u!95 &1079740387 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5529670064985803854, guid: dee038bf7d38b654882ad67d443c1e57,
+    type: 3}
+  m_PrefabInstance: {fileID: 5344710372387730501}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1080182968 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 233022684973042137, guid: 49494abf0ec370a4a9fb4e008aa62206,
@@ -41759,11 +41768,41 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3047298552519407028, guid: dee038bf7d38b654882ad67d443c1e57,
+        type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 1079740387}
+    - target: {fileID: 3047298552519407028, guid: dee038bf7d38b654882ad67d443c1e57,
+        type: 3}
+      propertyPath: deathDelay
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3047298552519407028, guid: dee038bf7d38b654882ad67d443c1e57,
+        type: 3}
+      propertyPath: gameOverDelay
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3943942701955923323, guid: dee038bf7d38b654882ad67d443c1e57,
         type: 3}
       propertyPath: crosshair
       value: 
       objectReference: {fileID: 739232697}
+    - target: {fileID: 5529670064985803854, guid: dee038bf7d38b654882ad67d443c1e57,
+        type: 3}
+      propertyPath: m_WarningMessage
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'root'\n\tTransform 'lowerarm_l'\n\tTransform
+        'root'\n\tTransform 'neck_01'\n\tTransform 'clavicle_l'\n\tTransform 'spine_02'\n\tTransform
+        'upperarm_r'\n\tTransform 'upperarm_l'\n\tTransform 'thigh_l'\n\tTransform
+        'calf_l'\n\tand more ...\n\tFrom animation clip 'Grapple'"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8138480537276564333, guid: dee038bf7d38b654882ad67d443c1e57,
+        type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 1079740387}
     - target: {fileID: 8243668694947222418, guid: dee038bf7d38b654882ad67d443c1e57,
         type: 3}
       propertyPath: m_Name
