@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GateBlue : MonoBehaviour
+public class GateGreen : MonoBehaviour
 {
     public int requiredCollectables = 3;
     private bool gateOpened = false;
 
-    public BlueGem gem; // Drag and drop the Gem object in the Inspector
+    public GreenGem gem;
 
     private void Update()
     {
-        if (!gateOpened && CollectableBlue.collectedCount >= requiredCollectables)
+        if (!gateOpened && BucketGreen.collectedCount >= requiredCollectables)
         {
             gateOpened = true;
             OpenGate();
