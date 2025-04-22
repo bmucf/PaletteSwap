@@ -5,18 +5,33 @@ using UnityEngine;
 public class BucketYellow : MonoBehaviour
 {
     public static int collectedCount = 0;
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip bucketSound;
 
-    // Ensure the OnTriggerEnter method is used
+    private void Start()
+    {
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        // Check if the object colliding with the collectable is the player
         if (other.CompareTag("Player"))
         {
-            // Increment the collected count
             collectedCount++;
 
-            // Optionally destroy the collectable object to indicate it was collected
-            Destroy(gameObject);
+            if (audioSource != null && bucketSound != null)
+            {
+                audioSource.PlayOneShot(bucketSound);
+            }
+            else
+            {
+                Debug.LogWarning("Missing audioSource or bucketSound on " + gameObject.name);
+            }
+            Destroy(gameObject, 0.5f);
         }
     }
 }

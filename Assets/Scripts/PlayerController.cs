@@ -83,7 +83,11 @@ public class PlayerController : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        cameraPitch = cameraPivot.localEulerAngles.x;
+        lookDelta = Vector2.zero;
     }
+
 
     void Update()
     {

@@ -1,8 +1,8 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
-public class GreenGem : MonoBehaviour
+public class RedGem : MonoBehaviour
 {
     private Collider gemCollider;
 
@@ -96,6 +96,4 @@ public class GreenGem : MonoBehaviour
 
         SceneManager.LoadScene("Win");
     }
-
-
 }

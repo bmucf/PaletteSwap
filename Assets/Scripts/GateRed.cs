@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GateGreen : MonoBehaviour
+public class GateRed : MonoBehaviour
 {
     public int requiredCollectables = 3;
     private bool gateOpened = false;
 
-    public GreenGem gem;
+    public RedGem gem;
 
     [Header("Audio")]
     public AudioSource gateAudioSource;
@@ -16,7 +16,7 @@ public class GateGreen : MonoBehaviour
 
     private void Update()
     {
-        if (!gateOpened && BucketGreen.collectedCount >= requiredCollectables)
+        if (!gateOpened && BucketRed.collectedCount >= requiredCollectables)
         {
             gateOpened = true;
             OpenGate();

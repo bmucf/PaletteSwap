@@ -13,6 +13,9 @@ public class YellowGem : MonoBehaviour
     public float delayBeforeWinScreen = 5f;
     public GameObject victoryPlayerModel;
     public GameObject originalPlayerModel;
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip gemSound;
 
     private void Start()
     {
@@ -32,13 +35,21 @@ public class YellowGem : MonoBehaviour
     {
         if (gemCollider.enabled && other.CompareTag("Player"))
         {
-            // Play victory scene
             StartCoroutine(PlayVictorySequence(other.gameObject));
         }
     }
 
     private IEnumerator PlayVictorySequence(GameObject player)
     {
+        if (audioSource != null && gemSound != null)
+        {
+            audioSource.PlayOneShot(gemSound);
+        }
+        else
+        {
+            Debug.LogWarning("Missing audio source or gem sound!");
+        }
+
         // Disable the original player model
         if (originalPlayerModel != null)
             originalPlayerModel.SetActive(false);
@@ -81,12 +92,9 @@ public class YellowGem : MonoBehaviour
 
         yield return new WaitForSeconds(delayBeforeWinScreen);
 
-        // Restore cursor settings for the next scene
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        // Load the win screen
         SceneManager.LoadScene("Win");
     }
-
 }

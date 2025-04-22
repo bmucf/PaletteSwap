@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BucketGreen : MonoBehaviour
+public class BucketRed : MonoBehaviour
 {
     public static int collectedCount = 0;
     [Header("Audio")]
