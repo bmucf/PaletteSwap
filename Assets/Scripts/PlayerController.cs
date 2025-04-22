@@ -13,6 +13,14 @@ public class PlayerController : MonoBehaviour
     public Image crosshair;
     public Animator animator;
     public bool canMove = true;
+    private bool wasSquashing;
+
+
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip squashSound;
+    public AudioClip jumpSound;
+    public AudioClip glideSound;
 
 
     [Header("Camera Settings")]
@@ -140,7 +148,12 @@ public class PlayerController : MonoBehaviour
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             animator.SetTrigger("Jump");
+
             GetComponent<Animator>().SetBool("isGrounded", true);
+
+
+            if (jumpSound != null)
+                audioSource.PlayOneShot(jumpSound);
         }
     }
 
@@ -169,7 +182,15 @@ public class PlayerController : MonoBehaviour
             : originalScale;
 
         playerModel.localScale = Vector3.Lerp(playerModel.localScale, targetScale, Time.deltaTime * squashSpeed);
+
+        if (isSquashing && !wasSquashing && squashSound != null)
+        {
+            audioSource.PlayOneShot(squashSound);
+        }
+
+        wasSquashing = isSquashing;
     }
+
 
     void HandleGliding()
     {
@@ -180,6 +201,7 @@ public class PlayerController : MonoBehaviour
         {
             isGliding = true;
             animator.SetBool("IsGliding", true);  // Set gliding state in Animator
+            audioSource.PlayOneShot(glideSound);
         }
         else
         {

@@ -10,6 +10,10 @@ public class GrappleHand : MonoBehaviour
     private Vector3 originalLocalPosition;
     private Coroutine stretchRoutine;
 
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip grappleShootSound;
+
     void Start()
     {
         if (hand != null)
@@ -30,6 +34,12 @@ public class GrappleHand : MonoBehaviour
     {
         Vector3 start = hand.position;
         float elapsed = 0f;
+
+
+        if (audioSource != null && grappleShootSound != null)
+        {
+            audioSource.PlayOneShot(grappleShootSound);
+        }
 
         // === Reach ===
         while (elapsed < reachDuration)

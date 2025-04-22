@@ -12,6 +12,9 @@ public class GreenGem : MonoBehaviour
     public float delayBeforeWinScreen = 5f;
     public GameObject victoryPlayerModel;
     public GameObject originalPlayerModel;
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip gemSound;
 
     private void Start()
     {
@@ -31,7 +34,7 @@ public class GreenGem : MonoBehaviour
     {
         if (gemCollider.enabled && other.CompareTag("Player"))
         {
-            // Play victory scene
+            audioSource.PlayOneShot(gemSound);
             StartCoroutine(PlayVictorySequence(other.gameObject));
         }
     }

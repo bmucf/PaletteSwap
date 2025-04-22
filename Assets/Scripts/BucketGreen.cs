@@ -5,6 +5,9 @@ using UnityEngine;
 public class BucketGreen : MonoBehaviour
 {
     public static int collectedCount = 0;
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip bucketSound;
 
     // Ensure the OnTriggerEnter method is used
     private void OnTriggerEnter(Collider other)
@@ -12,10 +15,8 @@ public class BucketGreen : MonoBehaviour
         // Check if the object colliding with the collectable is the player
         if (other.CompareTag("Player"))
         {
-            // Increment the collected count
             collectedCount++;
-
-            // Optionally destroy the collectable object to indicate it was collected
+            audioSource.PlayOneShot(bucketSound);
             Destroy(gameObject);
         }
     }

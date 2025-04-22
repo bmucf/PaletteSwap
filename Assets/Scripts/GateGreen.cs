@@ -9,6 +9,11 @@ public class GateGreen : MonoBehaviour
 
     public GreenGem gem;
 
+    [Header("Audio")]
+    public AudioSource gateAudioSource;
+    public AudioClip gateOpenClip;
+
+
     private void Update()
     {
         if (!gateOpened && BucketGreen.collectedCount >= requiredCollectables)
@@ -21,9 +26,13 @@ public class GateGreen : MonoBehaviour
     private void OpenGate()
     {
         Debug.Log("Gate opened!");
-        Destroy(gameObject);
 
-        // Activate the gem so it can now be collected
+        if (gateAudioSource != null && gateOpenClip != null)
+        {
+            gateAudioSource.PlayOneShot(gateOpenClip);
+        }
+
+
         if (gem != null)
             gem.Activate();
     }
