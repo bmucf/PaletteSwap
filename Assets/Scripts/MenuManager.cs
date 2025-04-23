@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
@@ -45,5 +46,15 @@ public class MenuManager : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+    }
+
+    public void ReturnToMenu()
+    {
+       SceneManager.LoadScene("MainMenu");
+    }
+
+    public void ReturnToHub()
+    {
+        SceneManager.LoadScene("Hub");
     }
 }
