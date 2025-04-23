@@ -2197,6 +2197,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3943942701955923323, guid: dee038bf7d38b654882ad67d443c1e57,
         type: 3}
+      propertyPath: speed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3943942701955923323, guid: dee038bf7d38b654882ad67d443c1e57,
+        type: 3}
       propertyPath: crosshair
       value: 
       objectReference: {fileID: 237804667}
@@ -10934,6 +10939,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1614109401}
+  - {fileID: 441799155}
   - {fileID: 426850887}
   - {fileID: 1003686855}
   - {fileID: 362314318}
@@ -10954,7 +10960,6 @@ SceneRoots:
   - {fileID: 537971557}
   - {fileID: 1991243170}
   - {fileID: 809129297}
-  - {fileID: 441799155}
   - {fileID: 48952134}
   - {fileID: 1932521940}
   - {fileID: 1289541182}
