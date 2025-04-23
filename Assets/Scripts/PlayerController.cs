@@ -133,7 +133,7 @@ public class PlayerController : MonoBehaviour
         Vector3 direction = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
         float speed = direction.magnitude;
 
-        Debug.Log($"Move Input: {moveInput}, Speed: {speed}");
+       // Debug.Log($"Move Input: {moveInput}, Speed: {speed}");
 
         if (speed >= 0.1f)
         {
