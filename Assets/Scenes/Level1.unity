@@ -37013,7 +37013,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   volume: {fileID: 2046552869}
-  fadeDuration: 2
+  fadeDuration: 3
 --- !u!1 &1815992792 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 982443067129992437, guid: 49494abf0ec370a4a9fb4e008aa62206,
