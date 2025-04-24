@@ -5,16 +5,12 @@ public class MenuManager : MonoBehaviour
 {
     bool isPaused;
     public CanvasGroup PauseUI;
-    //GameObject player;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
-        //player = GameObject.Find("Player");
         Resume();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P))
@@ -31,7 +27,7 @@ public class MenuManager : MonoBehaviour
         Time.timeScale = 1f;
         isPaused = false;
         PauseUI.alpha = 0;
-        PauseUI.blocksRaycasts = true;
+        PauseUI.blocksRaycasts = false;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -50,7 +46,7 @@ public class MenuManager : MonoBehaviour
 
     public void ReturnToMenu()
     {
-       SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void ReturnToHub()
