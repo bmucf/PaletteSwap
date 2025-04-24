@@ -19,6 +19,7 @@ public class PlayerGrapple : MonoBehaviour
     private bool isReturning = false;
     private bool isPullingPlayer = false;
     private Vector3 grappleTargetPosition;
+    public Animator animator;
 
     private CharacterController controller;
     private PlayerInputActions inputActions;
@@ -84,7 +85,11 @@ public class PlayerGrapple : MonoBehaviour
         isPullingPlayer = false;
 
         shootDirection = Camera.main.transform.forward;
+
+        // Rotate the grapple arm to face shoot direction
+        grappleArm.rotation = Quaternion.LookRotation(shootDirection);
     }
+
 
     void MoveGrappleArm()
     {
@@ -137,6 +142,7 @@ public class PlayerGrapple : MonoBehaviour
 
                 if (grappleHand != null)
                 {
+                    animator.SetTrigger("Grapple"); 
                     grappleHand.FireToTarget(grappleTargetPosition);
                 }
 
@@ -150,7 +156,6 @@ public class PlayerGrapple : MonoBehaviour
         yield return new WaitForSeconds(0.4f);
         if (grappleHand != null)
         {
-
         }
 
         isPullingPlayer = true;
