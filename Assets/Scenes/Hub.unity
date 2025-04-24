@@ -778,6 +778,12 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &165525969 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5529670064985803854, guid: dee038bf7d38b654882ad67d443c1e57,
+    type: 3}
+  m_PrefabInstance: {fileID: 441799155}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &186425222
 GameObject:
   m_ObjectHideFlags: 0
@@ -2110,7 +2116,7 @@ PrefabInstance:
     - target: {fileID: 3943942701955923323, guid: dee038bf7d38b654882ad67d443c1e57,
         type: 3}
       propertyPath: speed
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3943942701955923323, guid: dee038bf7d38b654882ad67d443c1e57,
         type: 3}
@@ -2167,6 +2173,11 @@ PrefabInstance:
       propertyPath: m_IsKinematic
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8138480537276564333, guid: dee038bf7d38b654882ad67d443c1e57,
+        type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 165525969}
     - target: {fileID: 8138480537276564333, guid: dee038bf7d38b654882ad67d443c1e57,
         type: 3}
       propertyPath: shootSpeed

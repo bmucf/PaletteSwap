@@ -23061,6 +23061,11 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 79426fb398481b743b1ba468067088de, type: 3}
     - target: {fileID: 8138480537276564333, guid: dee038bf7d38b654882ad67d443c1e57,
         type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 929449166}
+    - target: {fileID: 8138480537276564333, guid: dee038bf7d38b654882ad67d443c1e57,
+        type: 3}
       propertyPath: shootSpeed
       value: 150
       objectReference: {fileID: 0}
@@ -23153,6 +23158,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1015091417}
   m_SourcePrefab: {fileID: 100100000, guid: dee038bf7d38b654882ad67d443c1e57, type: 3}
+--- !u!95 &929449166 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5529670064985803854, guid: dee038bf7d38b654882ad67d443c1e57,
+    type: 3}
+  m_PrefabInstance: {fileID: 929449165}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &937905875
 GameObject:
   m_ObjectHideFlags: 0
