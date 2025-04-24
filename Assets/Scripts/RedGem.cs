@@ -93,6 +93,9 @@ public class RedGem : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        
+        PlayerPrefs.SetInt("RedGemCollected", 1);
+        PlayerPrefs.Save();
 
         SceneManager.LoadScene("Win");
     }

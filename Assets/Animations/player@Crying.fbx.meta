@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2b1f8f98155add0409941aaee4046305
+guid: 2b18ca2c9cb697b488c2eee2bc146d12
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -24,14 +24,43 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Crying
+      takeName: mixamo.com
+      internalID: -203655887218126122
+      firstFrame: 0
+      lastFrame: 188
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 0
   meshes:
     lODScreenPercentages: []
@@ -77,17 +106,7 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
-  referencedClips:
-  - 2b18ca2c9cb697b488c2eee2bc146d12
-  - 70d4f1c21db57d2448d10769e4dff300
-  - 6c94fe20f1ea96e4aa59a3afdd36bef9
-  - 0adebe86f6f9d7d428b63002fd39c921
-  - 5ea35dce8b7ef9c4bb8e727575eb2497
-  - a67b1290576fd234ca33c0968f66e46f
-  - 9f1db3a538248ff46ab6c490505a8ece
-  - 5276a0d4a2f3cd34abe1ad855ed6853f
-  - 7073e4c6756177042a877471aa58db30
-  - 8f99e82f7a3857644b87e7b56b7a90c3
+  referencedClips: []
   importAnimation: 1
   humanDescription:
     serializedVersion: 3
@@ -103,13 +122,13 @@ ModelImporter:
     globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 2
+  animationType: 3
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0

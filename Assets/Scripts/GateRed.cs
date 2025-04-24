@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GateRed : MonoBehaviour
 {
-    public int requiredCollectables = 3;
+    public int requiredCollectables = 5;
     private bool gateOpened = false;
 
     public RedGem gem;

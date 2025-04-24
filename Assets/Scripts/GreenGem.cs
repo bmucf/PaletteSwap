@@ -93,6 +93,9 @@ public class GreenGem : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        
+        PlayerPrefs.SetInt("GreenGemCollected", 1);
+        PlayerPrefs.Save();
 
         SceneManager.LoadScene("Win");
     }

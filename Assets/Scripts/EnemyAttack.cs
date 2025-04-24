@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class EnemyAttack : MonoBehaviour
 {
-    public Animator animator;
 
     [Header("Audio")]
     public AudioSource audioSource;
@@ -16,7 +15,6 @@ public class EnemyAttack : MonoBehaviour
             {
                 audioSource.PlayOneShot(attackSound);
                 health.TakeDamage();
-                animator.SetTrigger("Die");
             }
         }
     }
