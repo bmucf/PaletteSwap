@@ -13,6 +13,7 @@ public class PlayerGrapple : MonoBehaviour
     public Transform player;
     public Transform grappleArm;
     public LayerMask grappleLayer;
+    public float grappleResetTime = 1f; // Time to wait before resetting grapple arm
 
     private Vector3 shootDirection;
     private bool isShooting = false;
@@ -25,6 +26,7 @@ public class PlayerGrapple : MonoBehaviour
     private PlayerInputActions inputActions;
     private GrappleHand grappleHand;
 
+    private Coroutine resetCoroutine;  // To handle resetting the grapple arm
 
     void Awake()
     {
@@ -47,7 +49,6 @@ public class PlayerGrapple : MonoBehaviour
     {
         controller = player.GetComponent<CharacterController>();
         grappleHand = GetComponent<GrappleHand>();
-
     }
 
     void Update()
@@ -88,8 +89,13 @@ public class PlayerGrapple : MonoBehaviour
 
         // Rotate the grapple arm to face shoot direction
         grappleArm.rotation = Quaternion.LookRotation(shootDirection);
-    }
 
+        // Start the reset timer
+        if (resetCoroutine != null)
+            StopCoroutine(resetCoroutine);
+
+        resetCoroutine = StartCoroutine(ResetGrappleAfterDelay());
+    }
 
     void MoveGrappleArm()
     {
@@ -142,23 +148,37 @@ public class PlayerGrapple : MonoBehaviour
 
                 if (grappleHand != null)
                 {
-                    animator.SetTrigger("Grapple"); 
+                    animator.SetTrigger("Grapple");
                     grappleHand.FireToTarget(grappleTargetPosition);
                 }
 
                 StartCoroutine(DelayBeforePull());
             }
-
         }
     }
+
     IEnumerator DelayBeforePull()
     {
         yield return new WaitForSeconds(0.4f);
-        if (grappleHand != null)
-        {
-        }
-
         isPullingPlayer = true;
     }
 
+    // Coroutine to reset the grapple arm after the specified delay
+    private IEnumerator ResetGrappleAfterDelay()
+    {
+        yield return new WaitForSeconds(grappleResetTime);
+
+        // Reset the grapple arm position and stop any movement
+        if (grappleArm != null)
+        {
+            grappleArm.position = player.position;  // Reset to the player's position or other reset logic
+            grappleArm.gameObject.SetActive(false);  // Optionally disable the grapple arm
+        }
+
+        isShooting = false;
+        isReturning = false;
+        isPullingPlayer = false;
+
+        // Additional reset logic if needed
+    }
 }

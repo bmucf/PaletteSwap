@@ -2257,12 +2257,32 @@ PrefabInstance:
         type: 3}
       propertyPath: hand
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7454920400995046067, guid: dee038bf7d38b654882ad67d443c1e57,
+        type: 3}
+      propertyPath: forearm
+      value: 
       objectReference: {fileID: 1042845389}
+    - target: {fileID: 7454920400995046067, guid: dee038bf7d38b654882ad67d443c1e57,
+        type: 3}
+      propertyPath: upperArm
+      value: 
+      objectReference: {fileID: 1042845389}
+    - target: {fileID: 7454920400995046067, guid: dee038bf7d38b654882ad67d443c1e57,
+        type: 3}
+      propertyPath: maxStretch
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 7454920400995046067, guid: dee038bf7d38b654882ad67d443c1e57,
         type: 3}
       propertyPath: audioSource
       value: 
-      objectReference: {fileID: 165525968}
+      objectReference: {fileID: 0}
+    - target: {fileID: 7454920400995046067, guid: dee038bf7d38b654882ad67d443c1e57,
+        type: 3}
+      propertyPath: returnDuration
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 7454920400995046067, guid: dee038bf7d38b654882ad67d443c1e57,
         type: 3}
       propertyPath: grappleShootSound
@@ -2271,12 +2291,22 @@ PrefabInstance:
     - target: {fileID: 7853527790896959123, guid: dee038bf7d38b654882ad67d443c1e57,
         type: 3}
       propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7853527790896959123, guid: dee038bf7d38b654882ad67d443c1e57,
+        type: 3}
+      propertyPath: m_Interpolate
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7853527790896959123, guid: dee038bf7d38b654882ad67d443c1e57,
         type: 3}
       propertyPath: m_IsKinematic
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7853527790896959123, guid: dee038bf7d38b654882ad67d443c1e57,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8138480537276564333, guid: dee038bf7d38b654882ad67d443c1e57,
         type: 3}

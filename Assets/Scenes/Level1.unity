@@ -4198,6 +4198,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CinematicMode
       objectReference: {fileID: 0}
+    - target: {fileID: 9066503967950810851, guid: 8e85188acebf61746b9584dfbe3a9111,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -21045,6 +21050,12 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -6062578164958778753, guid: c7cdfc6362c55c74da4b075f064a45b7, type: 3}
+--- !u!4 &1013535849 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1313468061912601448, guid: dee038bf7d38b654882ad67d443c1e57,
+    type: 3}
+  m_PrefabInstance: {fileID: 5344710372387730501}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1014019408 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 82629585173488352, guid: 49494abf0ec370a4a9fb4e008aa62206,
@@ -42008,6 +42019,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 961384082}
   m_SourcePrefab: {fileID: 100100000, guid: 49494abf0ec370a4a9fb4e008aa62206, type: 3}
+--- !u!4 &2053151373 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1198702321117849794, guid: dee038bf7d38b654882ad67d443c1e57,
+    type: 3}
+  m_PrefabInstance: {fileID: 5344710372387730501}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2055359934
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43622,14 +43639,59 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7454920400995046067, guid: dee038bf7d38b654882ad67d443c1e57,
         type: 3}
+      propertyPath: hand
+      value: 
+      objectReference: {fileID: 1013535849}
+    - target: {fileID: 7454920400995046067, guid: dee038bf7d38b654882ad67d443c1e57,
+        type: 3}
+      propertyPath: forearm
+      value: 
+      objectReference: {fileID: 1013535849}
+    - target: {fileID: 7454920400995046067, guid: dee038bf7d38b654882ad67d443c1e57,
+        type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 1079740387}
+    - target: {fileID: 7454920400995046067, guid: dee038bf7d38b654882ad67d443c1e57,
+        type: 3}
+      propertyPath: upperArm
+      value: 
+      objectReference: {fileID: 1013535849}
+    - target: {fileID: 7454920400995046067, guid: dee038bf7d38b654882ad67d443c1e57,
+        type: 3}
+      propertyPath: maxStretch
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7454920400995046067, guid: dee038bf7d38b654882ad67d443c1e57,
+        type: 3}
       propertyPath: audioSource
       value: 
       objectReference: {fileID: 2142225912}
     - target: {fileID: 7454920400995046067, guid: dee038bf7d38b654882ad67d443c1e57,
         type: 3}
+      propertyPath: grappleCube
+      value: 
+      objectReference: {fileID: 2053151373}
+    - target: {fileID: 7454920400995046067, guid: dee038bf7d38b654882ad67d443c1e57,
+        type: 3}
+      propertyPath: returnDuration
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7454920400995046067, guid: dee038bf7d38b654882ad67d443c1e57,
+        type: 3}
       propertyPath: grappleShootSound
       value: 
       objectReference: {fileID: 8300000, guid: 79426fb398481b743b1ba468067088de, type: 3}
+    - target: {fileID: 7853527790896959123, guid: dee038bf7d38b654882ad67d443c1e57,
+        type: 3}
+      propertyPath: m_Interpolate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7853527790896959123, guid: dee038bf7d38b654882ad67d443c1e57,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8138480537276564333, guid: dee038bf7d38b654882ad67d443c1e57,
         type: 3}
       propertyPath: animator
