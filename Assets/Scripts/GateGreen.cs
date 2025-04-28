@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GateGreen : MonoBehaviour
 {
-    public int requiredCollectables = 5;
+    public int requiredCollectables = 3;
     private bool gateOpened = false;
 
     public GreenGem gem;

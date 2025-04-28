@@ -4201,7 +4201,7 @@ PrefabInstance:
     - target: {fileID: 9066503967950810851, guid: 8e85188acebf61746b9584dfbe3a9111,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10207,7 +10207,7 @@ MonoBehaviour:
   - {fileID: 854647447}
   - {fileID: 431208069}
   - {fileID: 705242844}
-  moveSpeed: 7
+  moveSpeed: 6
   rotationSpeed: 10
   detectionRange: 9
 --- !u!4 &560679157
@@ -10582,7 +10582,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &569645709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14608,7 +14608,7 @@ RectTransform:
   m_GameObject: {fileID: 739232695}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5155674, y: 0.5155674, z: 0.5155674}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 569645712}
@@ -32946,7 +32946,7 @@ MonoBehaviour:
   - {fileID: 36766252}
   - {fileID: 1126731192}
   - {fileID: 212632948}
-  moveSpeed: 7
+  moveSpeed: 6
   rotationSpeed: 10
   detectionRange: 9
 --- !u!4 &1611241189
@@ -43632,6 +43632,16 @@ PrefabInstance:
       propertyPath: squashSound
       value: 
       objectReference: {fileID: 8300000, guid: 64118afb5a7130242af5531831b7dc39, type: 3}
+    - target: {fileID: 3943942701955923323, guid: dee038bf7d38b654882ad67d443c1e57,
+        type: 3}
+      propertyPath: cameraOffset.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3943942701955923323, guid: dee038bf7d38b654882ad67d443c1e57,
+        type: 3}
+      propertyPath: cameraOffset.z
+      value: -3.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5529670064985803854, guid: dee038bf7d38b654882ad67d443c1e57,
         type: 3}
       propertyPath: m_WarningMessage
@@ -43715,7 +43725,7 @@ PrefabInstance:
     - target: {fileID: 8243668694947222418, guid: dee038bf7d38b654882ad67d443c1e57,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8871988212461832063, guid: dee038bf7d38b654882ad67d443c1e57,
         type: 3}
@@ -43863,6 +43873,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 8049791852850884070, guid: 4033981b24465f74e9a57bb896f3361f,
+        type: 3}
+      propertyPath: moveSpeed
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8049791852850884070, guid: 4033981b24465f74e9a57bb896f3361f,
         type: 3}

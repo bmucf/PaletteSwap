@@ -121,10 +121,28 @@ public class PlayerController : MonoBehaviour
     {
         if (cameraPivot && playerModel)
         {
-            cameraPivot.position = playerModel.position + Vector3.up * 1.5f;
-            cameraTransform.localPosition = cameraOffset;
+            cameraPivot.position = playerModel.position + Vector3.up * 2f;
+
+            Vector3 desiredCameraPos = cameraPivot.position + cameraPivot.TransformDirection(cameraOffset);
+
+            RaycastHit hit;
+            Vector3 direction = desiredCameraPos - cameraPivot.position;
+            float distance = cameraOffset.magnitude;
+
+            if (Physics.Raycast(cameraPivot.position, direction.normalized, out hit, distance))
+            {
+                Vector3 hitPosition = hit.point - direction.normalized * 0.1f;
+                cameraTransform.position = Vector3.Lerp(cameraTransform.position, hitPosition, Time.deltaTime * 10f);
+            }
+            else
+            {
+                Vector3 targetPosition = cameraPivot.position + cameraPivot.TransformDirection(cameraOffset);
+                cameraTransform.position = Vector3.Lerp(cameraTransform.position, targetPosition, Time.deltaTime * 10f);
+            }
         }
     }
+
+
 
     void HandleMovement()
     {

@@ -168,7 +168,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Grapple
-  m_Speed: 10
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 7101298167665901929}
@@ -181,7 +181,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: cc5a1e077a34fa046963336c6d18a888,
+  m_Motion: {fileID: -203655887218126122, guid: 0adebe86f6f9d7d428b63002fd39c921,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
