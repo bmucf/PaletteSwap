@@ -2,15 +2,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using Unity.VisualScripting;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
 
     [Header("Bucket UI")]
-    public RectTransform bucketPanel;
-    public GameObject bucketIconPrefab;
+    public List<GameObject> existingBucketIcons = new List<GameObject>(); // <-- NEW
+    private int currentBucketIndex = 0; // <-- NEW
 
     [Header("Gem UI")]
     public Image redGemSlot, greenGemSlot, yellowGemSlot;
@@ -35,7 +34,6 @@ public class UIManager : MonoBehaviour
     [Header("Root UI Canvas")]
     public GameObject uiRoot;
 
-    private List<GameObject> _bucketIcons = new List<GameObject>();
     public Canvas uiCanvas;
 
     void Awake()
@@ -60,7 +58,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-
     void OnDestroy()
     {
         if (Instance == this)
@@ -83,14 +80,39 @@ public class UIManager : MonoBehaviour
         if (go != null)
             winText = go;
 
- 
         uiRoot.SetActive(true);
-        ClearBuckets();
 
-        // reset cages, swap collected gems
+        // Reset everything
+        ClearBuckets();
+        UpdateGemUI();
+
+        // Hide buckets initially (this happens when the game starts)
+        ToggleBucketIcons(false);
+
+        // Show bucket icons only in Levels 1, 2, 3
+        if (scene.name == "Level1" || scene.name == "Level2" || scene.name == "Level3")
+        {
+            ToggleBucketIcons(true);
+        }
+
+        // Reset WinText visibility based on gems
         if (winText != null)
             winText.SetActive(scene.name == "Hub" && AllGemsCollected());
     }
+
+    // Method to toggle bucket icons' visibility
+    void ToggleBucketIcons(bool isVisible)
+    {
+        foreach (var icon in existingBucketIcons)
+        {
+            if (icon != null)
+            {
+                icon.SetActive(isVisible);
+                Debug.Log($"Bucket Icon {icon.name} is now {(isVisible ? "visible" : "hidden")}");
+            }
+        }
+    }
+
 
     void Update()
     {
@@ -100,13 +122,39 @@ public class UIManager : MonoBehaviour
             Debug.Log("All gems collected cheat");
         }
     }
-    public void AddBucket(Sprite iconSprite)
+
+    // ------------ BUCKETS ------------
+
+    public void RemoveBucketIcon()
     {
-        var go = Instantiate(bucketIconPrefab, bucketPanel);
-        var img = go.GetComponent<Image>();
-        if (img != null) img.sprite = iconSprite;
-        _bucketIcons.Add(go);
+        if (currentBucketIndex < existingBucketIcons.Count)
+        {
+            existingBucketIcons[currentBucketIndex].SetActive(false);
+            currentBucketIndex++;
+        }
+        else
+        {
+            Debug.LogWarning("No more bucket icons to remove!");
+        }
     }
+
+    void ClearBuckets()
+    {
+        // Reactivate all bucket icons at start
+        foreach (var icon in existingBucketIcons)
+        {
+            if (icon != null)
+                icon.SetActive(true);
+        }
+        currentBucketIndex = 0;
+
+        // Reset bucket counts if needed
+        BucketRed.collectedCount = 0;
+        BucketGreen.collectedCount = 0;
+        BucketYellow.collectedCount = 0;
+    }
+
+    // ------------ GEMS ------------
 
     public void AddGem(string color)
     {
@@ -138,16 +186,6 @@ public class UIManager : MonoBehaviour
 
         if (PlayerPrefs.GetInt("YellowGemCollected", 0) == 1)
             yellowGemSlot.sprite = yellowGemSprite;
-    }
-
-    void ClearBuckets()
-    {
-        foreach (var go in _bucketIcons) Destroy(go);
-        _bucketIcons.Clear();
-
-        BucketRed.collectedCount = 0;
-        BucketGreen.collectedCount = 0;
-        BucketYellow.collectedCount = 0;
     }
 
     bool AllGemsCollected()

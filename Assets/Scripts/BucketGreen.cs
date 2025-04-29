@@ -31,19 +31,16 @@ public class BucketGreen : MonoBehaviour
 
         collectedCount++;
 
-        // spawn the UI icon
-        if (UIManager.Instance != null && bucketIconSprite != null)
-            UIManager.Instance.AddBucket(bucketIconSprite);
+        if (UIManager.Instance != null)
+            UIManager.Instance.RemoveBucketIcon();
         else
-            Debug.LogWarning("UIManager or bucketIconSprite not set on " + name);
+            Debug.LogWarning("UIManager not set on " + name);
 
-        // play sound
+        // Play sound
         if (audioSource != null && bucketSound != null)
             audioSource.PlayOneShot(bucketSound);
         else
             Debug.LogWarning("Missing audioSource or bucketSound on " + name);
-
-        // finally destroy the bucket object after a short delay
-        Destroy(gameObject, 0.5f);
+        Destroy(gameObject);
     }
 }

@@ -554,12 +554,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 34483558}
   m_PrefabAsset: {fileID: 0}
---- !u!82 &51752471 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 106182383811602692, guid: f99f8c23efcddc94a81d652ae9c1aa26,
-    type: 3}
-  m_PrefabInstance: {fileID: 5819036539290552167}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &61040324
 GameObject:
   m_ObjectHideFlags: 0
@@ -5188,7 +5182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccca5545d9c53824eadf04969b3980c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 591890552}
+  audioSource: {fileID: 667042946}
   bucketSound: {fileID: 8300000, guid: a00f64d11dd4b964cb2a731b62747046, type: 3}
   bucketIconSprite: {fileID: 21300000, guid: 657ca3715e778dd49aebccc1dc149410, type: 3}
 --- !u!65 &591890551
@@ -10618,7 +10612,7 @@ PrefabInstance:
     - target: {fileID: 1901850836586045386, guid: 5d643cdef639cef4db1e8a376550173b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.849865
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: 1901850836586045386, guid: 5d643cdef639cef4db1e8a376550173b,
         type: 3}
@@ -11134,7 +11128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccca5545d9c53824eadf04969b3980c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 1196640692}
+  audioSource: {fileID: 667042946}
   bucketSound: {fileID: 8300000, guid: a00f64d11dd4b964cb2a731b62747046, type: 3}
   bucketIconSprite: {fileID: 21300000, guid: 657ca3715e778dd49aebccc1dc149410, type: 3}
 --- !u!65 &1196640691
@@ -11720,7 +11714,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1329112856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12726,7 +12720,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccca5545d9c53824eadf04969b3980c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 1440093405}
+  audioSource: {fileID: 667042946}
   bucketSound: {fileID: 8300000, guid: a00f64d11dd4b964cb2a731b62747046, type: 3}
   bucketIconSprite: {fileID: 21300000, guid: 657ca3715e778dd49aebccc1dc149410, type: 3}
 --- !u!65 &1440093404
@@ -15343,7 +15337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccca5545d9c53824eadf04969b3980c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 1710253138}
+  audioSource: {fileID: 667042946}
   bucketSound: {fileID: 8300000, guid: a00f64d11dd4b964cb2a731b62747046, type: 3}
   bucketIconSprite: {fileID: 21300000, guid: 657ca3715e778dd49aebccc1dc149410, type: 3}
 --- !u!65 &1710253137
@@ -18438,7 +18432,7 @@ PrefabInstance:
         type: 3}
       propertyPath: audioSource
       value: 
-      objectReference: {fileID: 51752471}
+      objectReference: {fileID: 667042946}
     - target: {fileID: 2763175001430112044, guid: f99f8c23efcddc94a81d652ae9c1aa26,
         type: 3}
       propertyPath: bucketIconSprite

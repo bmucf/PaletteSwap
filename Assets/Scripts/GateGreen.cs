@@ -22,20 +22,30 @@ public class GateGreen : MonoBehaviour
             OpenGate();
         }
     }
-
     private void OpenGate()
     {
         Debug.Log("Gate opened!");
 
+        // First, visually disable the cage immediately
+        foreach (var renderer in GetComponentsInChildren<Renderer>())
+        {
+            renderer.enabled = false;
+        }
+
+        foreach (var collider in GetComponentsInChildren<Collider>())
+        {
+            collider.enabled = false;
+        }
+
+        // Play sound
         if (gateAudioSource != null && gateOpenClip != null)
         {
             gateAudioSource.PlayOneShot(gateOpenClip);
-            // Delay destruction to let the sound play
-            Destroy(gameObject, gateOpenClip.length); // Or just use 0.5f if you're unsure of length
+            // Delay destruction to let sound finish
+            Destroy(gameObject, gateOpenClip.length);
         }
         else
         {
-            // Fallback destroy if there's no audio
             Destroy(gameObject);
         }
 

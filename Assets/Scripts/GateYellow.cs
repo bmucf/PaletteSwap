@@ -16,7 +16,7 @@ public class GateYellow : MonoBehaviour
 
     private void Update()
     {
-        if (!gateOpened && BucketGreen.collectedCount >= requiredCollectables)
+        if (!gateOpened && BucketYellow.collectedCount >= requiredCollectables)
         {
             gateOpened = true;
             OpenGate();
@@ -27,15 +27,26 @@ public class GateYellow : MonoBehaviour
     {
         Debug.Log("Gate opened!");
 
+        // First, visually disable the cage immediately
+        foreach (var renderer in GetComponentsInChildren<Renderer>())
+        {
+            renderer.enabled = false;
+        }
+
+        foreach (var collider in GetComponentsInChildren<Collider>())
+        {
+            collider.enabled = false;
+        }
+
+        // Play sound
         if (gateAudioSource != null && gateOpenClip != null)
         {
             gateAudioSource.PlayOneShot(gateOpenClip);
-            // Delay destruction to let the sound play
-            Destroy(gameObject, gateOpenClip.length); // Or just use 0.5f if you're unsure of length
+            // Delay destruction to let sound finish
+            Destroy(gameObject, gateOpenClip.length);
         }
         else
         {
-            // Fallback destroy if there's no audio
             Destroy(gameObject);
         }
 
@@ -43,4 +54,3 @@ public class GateYellow : MonoBehaviour
             gem.Activate();
     }
 }
-
