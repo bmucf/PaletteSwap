@@ -96,6 +96,8 @@ public class RedGem : MonoBehaviour
         
         PlayerPrefs.SetInt("RedGemCollected", 1);
         PlayerPrefs.Save();
+        if (UIManager.Instance != null)
+            UIManager.Instance.AddGem("Red");
 
         SceneManager.LoadScene("Win");
     }

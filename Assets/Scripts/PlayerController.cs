@@ -68,8 +68,17 @@ public class PlayerController : MonoBehaviour
         inputActions.Gameplay.Jump.performed += _ => jumpPressed = true;
     }
 
-    void OnEnable() => inputActions.Gameplay.Enable();
-    void OnDisable() => inputActions.Gameplay.Disable();
+    void OnEnable()
+    {
+        if (inputActions != null)
+            inputActions.Gameplay.Enable();
+    }
+
+    void OnDisable()
+    {
+        if (inputActions != null)
+            inputActions.Gameplay.Disable();
+    }
 
     void Start()
     {

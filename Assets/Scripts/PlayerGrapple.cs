@@ -35,14 +35,20 @@ public class PlayerGrapple : MonoBehaviour
 
     void OnEnable()
     {
-        inputActions.Gameplay.Enable();
-        inputActions.Gameplay.Grapple.performed += OnGrappleInput;
+        if (inputActions != null)
+        {
+            inputActions.Gameplay.Enable();
+            inputActions.Gameplay.Grapple.performed += OnGrappleInput;
+        }
     }
 
     void OnDisable()
     {
-        inputActions.Gameplay.Grapple.performed -= OnGrappleInput;
-        inputActions.Gameplay.Disable();
+        if (inputActions != null)
+        {
+            inputActions.Gameplay.Grapple.performed -= OnGrappleInput;
+            inputActions.Gameplay.Disable();
+        }
     }
 
     void Start()

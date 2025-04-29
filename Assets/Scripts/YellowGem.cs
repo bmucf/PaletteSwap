@@ -97,6 +97,8 @@ public class YellowGem : MonoBehaviour
         
         PlayerPrefs.SetInt("YellowGemCollected", 1);
         PlayerPrefs.Save();
+        if (UIManager.Instance != null)
+            UIManager.Instance.AddGem("Yellow");
 
         SceneManager.LoadScene("Win");
     }

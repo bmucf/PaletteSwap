@@ -96,6 +96,8 @@ public class GreenGem : MonoBehaviour
         
         PlayerPrefs.SetInt("GreenGemCollected", 1);
         PlayerPrefs.Save();
+        if (UIManager.Instance != null)
+            UIManager.Instance.AddGem("Green");
 
         SceneManager.LoadScene("Win");
     }
