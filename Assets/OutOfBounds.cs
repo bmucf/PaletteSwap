@@ -9,6 +9,8 @@ public class OutOfBounds : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true; 
             SceneManager.LoadScene("GameOver");
         }
     }
