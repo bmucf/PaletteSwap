@@ -13151,6 +13151,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Eraser (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 8a97ca29caca2e74a882b68dfd8f44fe,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 953a8d646a6e8804aa0db19bcf8d5633, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -15604,12 +15609,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -7941684808614336999, guid: 3231539af2665c248a30f403d52410fd, type: 3}
---- !u!1 &786440361 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f25f42d452cc9724aba7146d9ae5ad95,
-    type: 3}
-  m_PrefabInstance: {fileID: 1584368127}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &790530585
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28708,6 +28707,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Eraser (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 8a97ca29caca2e74a882b68dfd8f44fe,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 953a8d646a6e8804aa0db19bcf8d5633, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -37671,108 +37675,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -7840330913872229149, guid: 3231539af2665c248a30f403d52410fd, type: 3}
---- !u!1 &1835654501 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5383965192204994827, guid: 4033981b24465f74e9a57bb896f3361f,
-    type: 3}
-  m_PrefabInstance: {fileID: 7073820308823905335}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &1835654507
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1835654501}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 1
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1001 &1839690633
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -42070,12 +41972,6 @@ Transform:
   - {fileID: 1188616863}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!20 &2065199149 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 962431359624105770, guid: dee038bf7d38b654882ad67d443c1e57,
-    type: 3}
-  m_PrefabInstance: {fileID: 5344710372387730501}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2066385938
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43682,40 +43578,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3616946888194672156, guid: 4033981b24465f74e9a57bb896f3361f,
-        type: 3}
-      propertyPath: animator
-      value: 
-      objectReference: {fileID: 1079740387}
-    - target: {fileID: 3616946888194672156, guid: 4033981b24465f74e9a57bb896f3361f,
-        type: 3}
-      propertyPath: playerCamera
-      value: 
-      objectReference: {fileID: 2065199149}
-    - target: {fileID: 3616946888194672156, guid: 4033981b24465f74e9a57bb896f3361f,
-        type: 3}
-      propertyPath: cutsceneCamera
-      value: 
-      objectReference: {fileID: 1615352134}
-    - target: {fileID: 3616946888194672156, guid: 4033981b24465f74e9a57bb896f3361f,
-        type: 3}
-      propertyPath: cutsceneObject
-      value: 
-      objectReference: {fileID: 786440361}
-    - target: {fileID: 3616946888194672156, guid: 4033981b24465f74e9a57bb896f3361f,
-        type: 3}
-      propertyPath: playerAnimator
-      value: 
-      objectReference: {fileID: 1466353674}
     - target: {fileID: 5383965192204994827, guid: 4033981b24465f74e9a57bb896f3361f,
         type: 3}
       propertyPath: m_Name
       value: Enemy
-      objectReference: {fileID: 0}
-    - target: {fileID: 8049791852850884070, guid: 4033981b24465f74e9a57bb896f3361f,
-        type: 3}
-      propertyPath: moveSpeed
-      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8049791852850884070, guid: 4033981b24465f74e9a57bb896f3361f,
         type: 3}
@@ -43735,11 +43601,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5383965192204994827, guid: 4033981b24465f74e9a57bb896f3361f,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1835654507}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4033981b24465f74e9a57bb896f3361f, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
