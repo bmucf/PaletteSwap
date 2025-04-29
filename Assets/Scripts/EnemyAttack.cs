@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemyAttack : MonoBehaviour
 {
@@ -10,12 +11,10 @@ public class EnemyAttack : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Health health = other.GetComponent<Health>();
-            if (health != null)
-            {
-                audioSource.PlayOneShot(attackSound);
-                health.TakeDamage();
-            }
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
+            SceneManager.LoadScene("GameOver");
         }
     }
 }
